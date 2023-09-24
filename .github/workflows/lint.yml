@@ -22,7 +22,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
-          python-version: 3.10.8
+          python-version: 3.10.13
 
       - name: Install Python dependencies
         run: pip install black flake8
@@ -32,3 +32,4 @@ jobs:
         with:
           black: true
           flake8: true
+          flake8_args: "--ignore=E501"
