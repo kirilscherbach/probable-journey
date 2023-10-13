@@ -1,5 +1,4 @@
 asgiref==3.7.2
-awsebcli==3.20.10
 blessed==1.20.0
 botocore==1.31.62
 cement==2.8.2
