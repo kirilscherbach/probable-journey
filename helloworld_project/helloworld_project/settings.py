@@ -30,7 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "0.0.0.0",
-    "http://pbj-env.eba-nfy8dd9w.eu-central-1.elasticbeanstalk.com/",
+    "pbj-env.eba-nfy8dd9w.eu-central-1.elasticbeanstalk.com",
 ]
 
 
