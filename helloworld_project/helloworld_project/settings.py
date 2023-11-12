@@ -29,6 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "pbj-env.eba-nfy8dd9w.eu-central-1.elasticbeanstalk.com",
+    "127.0.0.1",
 ]
 
 
@@ -155,5 +156,3 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
 }
-
-ALLOWED_HOSTS = []
