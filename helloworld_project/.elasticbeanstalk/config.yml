@@ -1,9 +1,9 @@
 branch-defaults:
   main:
-    environment: probable-journey-dev
+    environment: probable-journey-single-dev
     group_suffix: null
 global:
-  application_name: probable-journey
+  application_name: probable-journey-single
   branch: null
   default_ec2_keyname: aws-eb
   default_platform: Python 3.11 running on 64bit Amazon Linux 2023
