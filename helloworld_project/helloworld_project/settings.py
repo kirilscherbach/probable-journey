@@ -27,7 +27,11 @@ SECRET_KEY = "django-insecure-rcqwl%$dsonzdu8xyw$s42(9+f2uk0)q9a2#pe+5i1*&1$q3)#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["probable-journey-dev.eu-central-1.elasticbeanstalk.com"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "0.0.0.0",
+    "http://pbj-env.eba-nfy8dd9w.eu-central-1.elasticbeanstalk.com/",
+]
 
 
 # Application definition
@@ -154,4 +158,4 @@ REST_FRAMEWORK = {
     ],
 }
 
-ALLOWED_HOSTS = ["127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = []
