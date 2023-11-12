@@ -1,6 +1,6 @@
 branch-defaults:
   main:
-    environment: pbj-env
+    environment: pbjourney-env
     group_suffix: null
 global:
   application_name: probable-journey-single
