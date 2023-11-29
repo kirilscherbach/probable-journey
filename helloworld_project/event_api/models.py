@@ -16,7 +16,7 @@ class Event(models.Model):
         return f"{self.event_name} at {self.event_date}"
 
 
-class EventPlan(models.Model):
+class SongAtEventMapping(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
 
