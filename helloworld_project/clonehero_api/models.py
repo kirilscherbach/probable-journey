@@ -36,6 +36,8 @@ class Song(models.Model):
         choices=INTENSITY_CHOICES, null=True
     )
     intensity_keys = models.IntegerField(choices=INTENSITY_CHOICES, null=True)
+    create_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
     search_vector = SearchVectorField(null=True, blank=True)
 
     class Meta:
