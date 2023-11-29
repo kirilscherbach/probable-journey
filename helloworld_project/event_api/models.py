@@ -19,3 +19,6 @@ class Event(models.Model):
 class EventPlan(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"Song assignment for event {self.event.event_name}"
