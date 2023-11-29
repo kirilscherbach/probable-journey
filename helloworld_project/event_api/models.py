@@ -20,5 +20,12 @@ class EventPlan(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["event", "song"], name="unique_song_per_event"
+            )
+        ]
+
     def __str__(self) -> str:
-        return f"Song assignment for event {self.event.event_name}"
+        return f"{self.song.song_title} ({self.song.artist}) played at {self.event.event_name} event"
