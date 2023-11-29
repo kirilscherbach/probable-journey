@@ -1,3 +1,6 @@
-# from django.contrib import admin
+from django.contrib import admin
 
-# Register your models here.
+from .models import Event, EventPlan
+
+admin.site.register(Event)
+admin.site.register(EventPlan)
