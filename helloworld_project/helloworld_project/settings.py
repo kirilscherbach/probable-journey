@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "clonehero_api.apps.CloneheroApiConfig",
-    "events_api.apps.EventApiConfig" "rest_framework",
+    "event_api.apps.EventApiConfig",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
