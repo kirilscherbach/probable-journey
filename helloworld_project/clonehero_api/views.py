@@ -1,6 +1,6 @@
 from django.contrib.postgres.search import SearchQuery, SearchRank
 from rest_framework import generics
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser
 
 from .models import Song
 from .serializers import SongSerializer
@@ -16,13 +16,13 @@ class SongList(generics.ListCreateAPIView):
         """
         if self.request.method == "GET":
             return [AllowAny()]
-        return [IsAuthenticated()]
+        return [IsAdminUser()]
 
 
 class SongUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
 
 class SongSearchList(generics.ListAPIView):

@@ -1,5 +1,5 @@
 from rest_framework import generics
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 
 from .models import Event, SongAtEventMapping
 from .serializers import EventSerializer, SongAtEventMappingSerializer
@@ -14,7 +14,7 @@ class EventList(generics.ListCreateAPIView):
         """
         if self.request.method == "GET":
             return [AllowAny()]
-        return [IsAuthenticated()]
+        return [IsAdminUser()]
 
     def get_queryset(self):
         queryset = Event.objects.all()
