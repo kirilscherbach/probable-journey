@@ -19,8 +19,14 @@ class Event(models.Model):
 class SongAtEventMapping(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
+    mapper = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE  # new
+    )
 
     class Meta:
+        indexes = [
+            models.Index(fields=["mapper"]),
+        ]
         constraints = [
             models.UniqueConstraint(
                 fields=["event", "song"], name="unique_song_per_event"
