@@ -1,8 +1,13 @@
+from django.core.exceptions import PermissionDenied
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 
-from .models import Event, SongAtEventMapping
-from .serializers import EventSerializer, SongAtEventMappingSerializer
+from .models import Event, EventAttendee, SongAtEventMapping
+from .serializers import (
+    EventAttendeeSerializer,
+    EventSerializer,
+    SongAtEventMappingSerializer,
+)
 
 
 class EventList(generics.ListCreateAPIView):
@@ -53,3 +58,19 @@ class SongAtEventMappingDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SongAtEventMappingSerializer
     queryset = SongAtEventMapping.objects.all()
     permission_classes = [IsAuthenticated]
+
+
+class EventAttendeeList(generics.ListCreateAPIView):
+    serializer_class = EventAttendeeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = EventAttendee.objects.filter(
+            event__event_organizer=self.request.user
+        )
+        return queryset
+
+    def perform_create(self, serializer):
+        if self.request.user != serializer.validated_data["event"].event_organizer:
+            raise PermissionDenied("You are not the organizer of this event.")
+        serializer.save()

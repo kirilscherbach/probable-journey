@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from song_api.models import Song, SongCatalog
 
@@ -32,5 +33,28 @@ class SongAtEventMapping(models.Model):
             )
         ]
 
+    def save(self, *args, **kwargs):
+        if not EventAttendee.objects.filter(
+            event=self.event, attendee=self.mapper
+        ).exists():
+            raise ValidationError("The mapper is not an attendee of this event.")
+        super().save(*args, **kwargs)
+
     def __str__(self) -> str:
         return f"{self.song.song_title} ({self.song.artist}) played at {self.event.event_name} event"
+
+
+class EventAttendee(models.Model):
+    event = models.ForeignKey("Event", on_delete=models.CASCADE)
+    attendee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    create_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+
+    class Meta:
+        unique_together = (
+            "event",
+            "attendee",
+        )
+
+    def __str__(self) -> str:
+        return f"{self.attendee} is attending {self.event}"
