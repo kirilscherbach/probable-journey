@@ -5,7 +5,7 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("clonehero_api", "0008_song_create_date_song_update_date_and_more"),
+        ("song_api", "0008_song_create_date_song_update_date_and_more"),
         ("event_api", "0002_eventplan_unique_song_per_event"),
     ]
 

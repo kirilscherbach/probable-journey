@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("clonehero_api", "0002_alter_song_intensity_bass_and_more"),
+        ("song_api", "0002_alter_song_intensity_bass_and_more"),
     ]
 
     operations = [

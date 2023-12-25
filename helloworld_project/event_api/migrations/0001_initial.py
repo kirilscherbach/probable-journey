@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("clonehero_api", "0008_song_create_date_song_update_date_and_more"),
+        ("song_api", "0008_song_create_date_song_update_date_and_more"),
     ]
 
     operations = [
@@ -62,7 +62,7 @@ class Migration(migrations.Migration):
                     "song",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        to="clonehero_api.song",
+                        to="song_api.song",
                     ),
                 ),
             ],

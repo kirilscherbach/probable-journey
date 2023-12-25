@@ -8,7 +8,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
     dependencies = [
         (
-            "clonehero_api",
+            "song_api",
             "0004_alter_song_album_alter_song_charter_alter_song_genre_and_more",
         ),
     ]

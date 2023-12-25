@@ -8,8 +8,8 @@ from .views import (
 )
 
 urlpatterns = [
-    path("event/", EventList.as_view()),
-    path("event/<int:pk>/", EventDetail.as_view()),
-    path("mapping/", SongAtEventMappingList.as_view()),
-    path("mapping/<int:pk>/", SongAtEventMappingDetail.as_view()),
+    path("events/", EventList.as_view()),
+    path("events/<int:pk>/", EventDetail.as_view()),
+    path("mappings/", SongAtEventMappingList.as_view()),
+    path("mappings/<int:pk>/", SongAtEventMappingDetail.as_view()),
 ]

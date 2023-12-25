@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "clonehero_api.apps.CloneheroApiConfig",
+    "song_api.apps.SongApiConfig",
     "event_api.apps.EventApiConfig",
     "rest_framework",
 ]

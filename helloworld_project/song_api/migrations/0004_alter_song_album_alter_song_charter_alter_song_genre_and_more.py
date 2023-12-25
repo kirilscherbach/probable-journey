@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
     dependencies = [
         (
-            "clonehero_api",
+            "song_api",
             "0003_alter_song_album_alter_song_charter_alter_song_genre_and_more",
         ),
     ]

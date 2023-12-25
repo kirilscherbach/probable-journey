@@ -7,7 +7,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("clonehero_api", "0007_remove_song_clonehero_a_search__e10779_gin_and_more"),
+        ("song_api", "0007_remove_song_clonehero_a_search__e10779_gin_and_more"),
     ]
 
     operations = [

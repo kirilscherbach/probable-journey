@@ -1,6 +1,6 @@
-from clonehero_api.models import Song
 from django.conf import settings
 from django.db import models
+from song_api.models import Song
 
 
 class Event(models.Model):

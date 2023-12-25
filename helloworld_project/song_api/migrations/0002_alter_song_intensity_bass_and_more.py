@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("clonehero_api", "0001_initial"),
+        ("song_api", "0001_initial"),
     ]
 
     operations = [
