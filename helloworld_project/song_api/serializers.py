@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Song
+from .models import Song, SongCatalog
 
 
 class SongSerializer(serializers.ModelSerializer):
@@ -26,4 +26,14 @@ class SongSerializer(serializers.ModelSerializer):
             "intensity_rhythm_ghl",
             "intensity_guitar_coop_ghl",
             "intensity_keys",
+        ]
+
+
+class SongCatalogSerializer(serializers.ModelSerializer):
+    class MetaL:
+        model = SongCatalog
+        fields = [
+            "id",
+            "song_catalog_name",
+            "song_catalog_owner",
         ]

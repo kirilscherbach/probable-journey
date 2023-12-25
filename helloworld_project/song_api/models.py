@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.db import models, transaction
@@ -5,7 +6,18 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
-# Create your models here.
+class SongCatalog(models.Model):
+    song_catalog_name = models.CharField(max_length=250, unique=True)
+    create_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+    song_catalog_owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+    )
+
+    def __str__(self) -> str:
+        return f"{self.song_catalog_name} owned by {self.song_catalog_owner}"
+
+
 class Song(models.Model):
     INTENSITY_CHOICES = [
         (0, "Intensity 0"),
@@ -16,6 +28,7 @@ class Song(models.Model):
         (5, "Ultra-Violence"),
         (6, "Nightmare"),
     ]
+    song_catalog = models.ForeignKey(SongCatalog, on_delete=models.CASCADE)
     song_title = models.CharField(max_length=250)
     artist = models.CharField(max_length=250)
     album = models.CharField(max_length=250, null=True)

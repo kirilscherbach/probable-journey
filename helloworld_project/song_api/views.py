@@ -2,8 +2,8 @@ from django.contrib.postgres.search import SearchQuery, SearchRank
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAdminUser
 
-from .models import Song
-from .serializers import SongSerializer
+from .models import Song, SongCatalog
+from .serializers import SongCatalogSerializer, SongSerializer
 
 
 class SongList(generics.ListCreateAPIView):
@@ -37,3 +37,22 @@ class SongSearchList(generics.ListAPIView):
             .filter(search_vector=search_query)
             .order_by("-rank")
         )
+
+
+class SongCatalogList(generics.ListCreateAPIView):
+    queryset = SongCatalog.objects.all()
+    serializer_class = SongCatalogSerializer
+
+    def get_permissions(self):
+        """
+        Override to customize permission for different actions.
+        """
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAdminUser()]
+
+
+class SongCatalogUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SongCatalog.objects.all()
+    serializer_class = SongCatalogSerializer
+    permission_classes = [IsAdminUser]

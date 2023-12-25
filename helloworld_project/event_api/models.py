@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-from song_api.models import Song
+from song_api.models import Song, SongCatalog
 
 
 class Event(models.Model):
@@ -8,8 +8,9 @@ class Event(models.Model):
     event_date = models.DateField()
     create_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)
+    song_catalog = models.ForeignKey(SongCatalog, on_delete=models.CASCADE)
     event_organizer = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE  # new
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
 
     def __str__(self) -> str:
@@ -19,9 +20,7 @@ class Event(models.Model):
 class SongAtEventMapping(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
-    mapper = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE  # new
-    )
+    mapper = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
         indexes = [
