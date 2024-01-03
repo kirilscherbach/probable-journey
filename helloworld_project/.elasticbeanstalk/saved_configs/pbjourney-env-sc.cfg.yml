@@ -1,7 +1,7 @@
 EnvironmentConfigurationMetadata:
   Description: Configuration created from the EB CLI using "eb config save".
-  DateCreated: '1699827093000'
-  DateModified: '1699827093000'
+  DateCreated: '1704289267000'
+  DateModified: '1704289267000'
 Platform:
   PlatformArn: arn:aws:elasticbeanstalk:eu-central-1::platform/Python 3.11 running
     on 64bit Amazon Linux 2023/4.0.5
@@ -9,6 +9,10 @@ OptionSettings:
   aws:elasticbeanstalk:command:
     BatchSize: '30'
     BatchSizeType: Percentage
+  aws:elasticbeanstalk:application:environment:
+    DJANGO_SUPERUSER_EMAIL: ""
+    DJANGO_SUPERUSER_USERNAME: ""
+    DJANGO_SUPERUSER_PASSWORD: ""
   aws:elasticbeanstalk:environment:
     ServiceRole: aws-elasticbeanstalk-service-role
     EnvironmentType: SingleInstance
