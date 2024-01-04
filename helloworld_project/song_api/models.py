@@ -31,24 +31,44 @@ class Song(models.Model):
     song_catalog = models.ForeignKey(SongCatalog, on_delete=models.CASCADE)
     song_title = models.CharField(max_length=250)
     artist = models.CharField(max_length=250)
-    album = models.CharField(max_length=250, null=True)
-    genre = models.CharField(max_length=250, null=True)
-    year = models.IntegerField(null=True)
-    song_length = models.CharField(max_length=250, null=True)
-    charter = models.CharField(max_length=250, null=True)
-    intensity_guitar = models.IntegerField(choices=INTENSITY_CHOICES, null=True)
-    intensity_rhythm = models.IntegerField(choices=INTENSITY_CHOICES, null=True)
-    intensity_bass = models.IntegerField(choices=INTENSITY_CHOICES, null=True)
-    intensity_guitar_coop = models.IntegerField(choices=INTENSITY_CHOICES, null=True)
-    intensity_drums = models.IntegerField(choices=INTENSITY_CHOICES, null=True)
-    intensity_drums_real = models.IntegerField(choices=INTENSITY_CHOICES, null=True)
-    intensity_guitarghl = models.IntegerField(choices=INTENSITY_CHOICES, null=True)
-    intensity_bassghl = models.IntegerField(choices=INTENSITY_CHOICES, null=True)
-    intensity_rhythm_ghl = models.IntegerField(choices=INTENSITY_CHOICES, null=True)
-    intensity_guitar_coop_ghl = models.IntegerField(
-        choices=INTENSITY_CHOICES, null=True
+    album = models.CharField(max_length=250, null=True, blank=True)
+    genre = models.CharField(max_length=250, null=True, blank=True)
+    year = models.IntegerField(null=True, blank=True)
+    song_length = models.CharField(max_length=250, null=True, blank=True)
+    charter = models.CharField(max_length=250, null=True, blank=True)
+    intensity_guitar = models.IntegerField(
+        choices=INTENSITY_CHOICES, null=True, blank=True
     )
-    intensity_keys = models.IntegerField(choices=INTENSITY_CHOICES, null=True)
+    intensity_rhythm = models.IntegerField(
+        choices=INTENSITY_CHOICES, null=True, blank=True
+    )
+    intensity_bass = models.IntegerField(
+        choices=INTENSITY_CHOICES, null=True, blank=True
+    )
+    intensity_guitar_coop = models.IntegerField(
+        choices=INTENSITY_CHOICES, null=True, blank=True
+    )
+    intensity_drums = models.IntegerField(
+        choices=INTENSITY_CHOICES, null=True, blank=True
+    )
+    intensity_drums_real = models.IntegerField(
+        choices=INTENSITY_CHOICES, null=True, blank=True
+    )
+    intensity_guitarghl = models.IntegerField(
+        choices=INTENSITY_CHOICES, null=True, blank=True
+    )
+    intensity_bassghl = models.IntegerField(
+        choices=INTENSITY_CHOICES, null=True, blank=True
+    )
+    intensity_rhythm_ghl = models.IntegerField(
+        choices=INTENSITY_CHOICES, null=True, blank=True
+    )
+    intensity_guitar_coop_ghl = models.IntegerField(
+        choices=INTENSITY_CHOICES, null=True, blank=True
+    )
+    intensity_keys = models.IntegerField(
+        choices=INTENSITY_CHOICES, null=True, blank=True
+    )
     create_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)
     search_vector = SearchVectorField(null=True, blank=True)

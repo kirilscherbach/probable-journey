@@ -8,6 +8,7 @@ class SongSerializer(serializers.ModelSerializer):
         model = Song
         fields = [
             "id",
+            "song_catalog",
             "song_title",
             "artist",
             "album",
@@ -30,7 +31,7 @@ class SongSerializer(serializers.ModelSerializer):
 
 
 class SongCatalogSerializer(serializers.ModelSerializer):
-    class MetaL:
+    class Meta:
         model = SongCatalog
         fields = [
             "id",

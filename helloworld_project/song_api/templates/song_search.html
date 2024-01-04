@@ -1,0 +1,32 @@
+<form method="get" action="{% url 'song-search' %}">
+    <input type="text" name="q" placeholder="Search songs...">
+    <input type="submit" value="Search">
+</form>
+
+{% if page_obj %}
+    <ul>
+    {% for song in page_obj %}
+        <li>{{ song.song_title }} by {{ song.artist }}</li>
+    {% endfor %}
+    </ul>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last</a>
+            {% endif %}
+        </span>
+    </div>
+{% else %}
+    <p>No songs found</p>
+{% endif %}
