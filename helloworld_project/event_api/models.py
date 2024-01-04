@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models
 from song_api.models import Song, SongCatalog
@@ -46,7 +47,9 @@ class SongAtEventMapping(models.Model):
 
 class EventAttendee(models.Model):
     event = models.ForeignKey("Event", on_delete=models.CASCADE)
-    attendee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    attendee = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, related_name="attended_events"
+    )
     create_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)
 
