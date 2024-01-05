@@ -8,11 +8,70 @@ from song_api.models import Song
 
 
 @pytest.mark.django_db
-def test_event_list():
+def test_event_list_get_unauthenticated():
     client = APIClient()
     url = reverse("events")
     response = client.get(url)
+    assert response.status_code == 200  # Unauthenticated users should be able to GET
+
+
+@pytest.mark.django_db
+def test_event_list_get_authenticated():
+    client = APIClient()
+    user = mixer.blend(User)
+    client.force_authenticate(user=user)
+    url = reverse("events")
+    response = client.get(url)
+    assert response.status_code == 200  # Authenticated users should be able to GET
+
+
+@pytest.mark.django_db
+def test_event_list_post_unauthenticated():
+    client = APIClient()
+    url = reverse("events")
+    response = client.post(url, {})
+    assert (
+        response.status_code == 401
+    )  # Unauthenticated users should not be able to POST
+
+
+@pytest.mark.django_db
+def test_event_list_post_authenticated_not_admin():
+    client = APIClient()
+    user = mixer.blend(User)
+    client.force_authenticate(user=user)
+    url = reverse("events")
+    response = client.post(url, {})
+    assert (
+        response.status_code == 403
+    )  # Authenticated non-admin users should not be able to POST
+
+
+@pytest.mark.django_db
+def test_event_list_post_authenticated_admin():
+    client = APIClient()
+    user = mixer.blend(User, is_staff=True)  # Create an admin user
+    client.force_authenticate(user=user)
+    url = reverse("events")
+    response = client.post(url, {})
+    assert (
+        response.status_code == 400
+    )  # Admin users should be able to POST, but we didn't provide valid data
+
+
+@pytest.mark.django_db
+def test_event_list_get_with_organizer_filter():
+    client = APIClient()
+    user = mixer.blend(User)
+    event1 = mixer.blend(Event, event_organizer=user)
+    event2 = mixer.blend(Event)  # noqa: F841
+    url = reverse("events") + f"?organizer={user.id}"
+    response = client.get(url)
     assert response.status_code == 200
+    assert len(response.data) == 1  # Only one event should be returned
+    assert (
+        response.data[0]["id"] == event1.id
+    )  # The returned event should be the one organized by the user
 
 
 @pytest.mark.django_db
@@ -29,11 +88,70 @@ def test_event_detail():
 
 
 @pytest.mark.django_db
-def test_song_at_event_mapping_list():
+def test_song_at_event_mapping_list_get_unauthenticated():
     client = APIClient()
     url = reverse("mappings")
     response = client.get(url)
+    assert response.status_code == 200  # Unauthenticated users should be able to GET
+
+
+@pytest.mark.django_db
+def test_song_at_event_mapping_list_get_authenticated():
+    client = APIClient()
+    user = mixer.blend(User)
+    client.force_authenticate(user=user)
+    url = reverse("mappings")
+    response = client.get(url)
+    assert response.status_code == 200  # Authenticated users should be able to GET
+
+
+@pytest.mark.django_db
+def test_song_at_event_mapping_list_post_unauthenticated():
+    client = APIClient()
+    url = reverse("mappings")
+    response = client.post(url, {})
+    assert (
+        response.status_code == 401
+    )  # Unauthenticated users should not be able to POST
+
+
+@pytest.mark.django_db
+def test_song_at_event_mapping_list_post_authenticated():
+    client = APIClient()
+    user = mixer.blend(User)
+    client.force_authenticate(user=user)
+    url = reverse("mappings")
+    response = client.post(url, {})
+    assert (
+        response.status_code == 400
+    )  # Authenticated users should be able to POST, but we didn't provide valid data
+
+
+@pytest.mark.django_db
+def test_song_at_event_mapping_list_get_with_event_filter():
+    client = APIClient()
+    user = mixer.blend(User)
+    event1 = mixer.blend(Event)
+    event2 = mixer.blend(Event)
+    EventAttendee.objects.create(
+        event=event1, attendee=user
+    )  # Create an EventAttendee instance
+    EventAttendee.objects.create(
+        event=event2, attendee=user
+    )  # Create an EventAttendee instance
+    song_at_event_mapping1 = SongAtEventMapping.objects.create(
+        event=event1, mapper=user, song=mixer.blend(Song)
+    )
+    song_at_event_mapping2 = SongAtEventMapping.objects.create(  # noqa: F841
+        event=event2, mapper=user, song=mixer.blend(Song)
+    )
+    url = reverse("mappings") + f"?event={event1.id}"
+    response = client.get(url)
     assert response.status_code == 200
+    assert len(response.data) == 1  # Only one mapping should be returned
+    assert (
+        response.data[0]["id"] == song_at_event_mapping1.id
+    )  # The returned mapping should be the one for the event
 
 
 @pytest.mark.django_db
