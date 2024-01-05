@@ -60,4 +60,4 @@ class EventAttendee(models.Model):
         )
 
     def __str__(self) -> str:
-        return f"{self.attendee} is attending {self.event}"
+        return f"{self.attendee} is attending {self.event.event_name} on {self.event.event_date}"
