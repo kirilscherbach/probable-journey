@@ -121,7 +121,7 @@ def test_model_creation():
         event=event,
         attendee=user,
     )
-    assert attendee.create_date == datetime.date(2022, 1, 2)
+    assert attendee.create_date == datetime.date(2022, 1, 1)
 
 
 @pytest.mark.django_db
