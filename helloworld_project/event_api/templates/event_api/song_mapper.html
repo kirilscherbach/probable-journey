@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Pick the songs you want to play at {{ event.event_name }}
+{% endblock %}
+
+{% block content %}
+    <h1>Pick the songs you want to play at {{ event.event_name }}</h1>
+    <form id="songForm" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="event" value="{{ event.id }}">
+        <input type="hidden" name="mapper" value="{{ request.user.id }}">
+        {% for song in songs %}
+            <li>
+                <input type="checkbox" name="song" value="{{ song.id }}">
+                {{ song.song_title }} by {{ song.artist }} {% if song.is_selected %}(Selected){% endif %}{% if song.can_delete %}(Deletable){% endif %}
+            </li>
+        {% endfor %}
+        <input type="submit" value="Add songs">
+    </form>
+
+    <script>
+        document.getElementById("songForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Get the selected songs
+            var selectedSongs = Array.from(document.querySelectorAll('input[name="song"]:checked')).map(function(song) {
+                return song.value;
+            });
+
+            // Create the JSON payload
+            var payload = {
+                "event": {{ event.id }},
+                "songs": selectedSongs,
+                "mapper": {{ request.user.id }}
+            };
+
+            // Send the POST request
+            fetch("{% url 'event-api:mappings' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    // Reload the current page
+                    location.reload();
+                } else {
+                    console.error("Error:", response.statusText);
+                }
+            })
+            .catch(function(error) {
+                console.error("Error:", error);
+            });
+        });
+    </script>
+
+
+{% endblock %}
