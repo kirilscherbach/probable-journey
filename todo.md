@@ -1,0 +1,3 @@
+- add songs as initial load
+- add limit of songs per user to event model
+- add event selection screen
