@@ -5,6 +5,6 @@
     <p>Username: {{ user.username }}</p>
     <p>Email: {{ user.email }}</p>
     <!-- Add more fields as necessary -->
-    <p><a href="{% url 'logout' %}">Logout</a></p>
+    <p><a href="{% url 'user:logout' %}">Logout</a></p>
   </div>
 {% endblock %}

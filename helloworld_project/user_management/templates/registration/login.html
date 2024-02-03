@@ -5,10 +5,15 @@
       <div class="col-md-5">
         <h2>Login</h2>
         <form method="post">
-          {% csrf_token %}
+            {% csrf_token %}
           {{ form.as_p }}
           <button class="btn btn-primary" type="submit">Login</button>
         </form>
+        <div>
+          <br>
+          Not registered yet of forgot password?
+        <a href="{% url 'user:signup' %}">Sign up (again)</a>
+        </div>
       </div>
     </div>
   </div>

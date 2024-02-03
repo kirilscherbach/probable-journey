@@ -18,9 +18,12 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path("accounts/", include("user_management.urls")),
+    path(
+        "accounts/",
+        include(("user_management.urls", "user_management"), namespace="user"),
+    ),
     path("admin/", admin.site.urls),
-    path("", include("hello.urls")),
-    path("song-api/", include("song_api.urls")),
-    path("event-api/", include("event_api.urls")),
+    path("", include(("hello.urls", "hello"), namespace="home")),
+    path("song-api/", include(("song_api.urls", "song-api"), namespace="song-api")),
+    path("event-api/", include(("event_api.urls", "event-api"), namespace="event-api")),
 ]
