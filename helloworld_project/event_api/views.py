@@ -1,8 +1,8 @@
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchQuery, SearchRank
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, render
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
@@ -32,8 +32,9 @@ class EventPermissionMixin(UserPassesTestMixin):
         return False
 
 
-class EventList(generics.ListCreateAPIView):
+class EventAPI(generics.ListCreateAPIView):
     serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_permissions(self):
         """
@@ -46,18 +47,26 @@ class EventList(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Event.objects.all()
         organizer = self.request.query_params.get("organizer")
+        event_name = self.request.query_params.get("event_name")
+        date = self.request.query_params.get("date")
+
         if organizer is not None:
             queryset = queryset.filter(event_organizer=organizer)
+        if event_name is not None:
+            queryset = queryset.filter(event_name__icontains=event_name)
+        if date is not None:
+            queryset = queryset.filter(date=date)
+
         return queryset
 
 
-class EventDetail(generics.RetrieveUpdateDestroyAPIView):
+class EventDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EventSerializer
     queryset = Event.objects.all()
     permission_classes = [IsAuthenticated]
 
 
-class SongAtEventMappingList(generics.ListCreateAPIView):
+class SongAtEventMappingAPI(generics.ListCreateAPIView):
     serializer_class = SongAtEventMappingSerializer
 
     def get_permissions(self):
@@ -97,13 +106,13 @@ class SongAtEventMappingList(generics.ListCreateAPIView):
         )
 
 
-class SongAtEventMappingDetail(generics.RetrieveUpdateDestroyAPIView):
+class SongAtEventMappingDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SongAtEventMappingSerializer
     queryset = SongAtEventMapping.objects.all()
     permission_classes = [IsAuthenticated]
 
 
-class EventAttendeeList(EventPermissionMixin, generics.ListCreateAPIView):
+class EventAttendeeAPI(EventPermissionMixin, generics.ListCreateAPIView):
     serializer_class = EventAttendeeSerializer
     permission_classes = [IsAuthenticated]
 
@@ -119,7 +128,7 @@ class EventAttendeeList(EventPermissionMixin, generics.ListCreateAPIView):
         serializer.save()
 
 
-class EventSongsView(EventPermissionMixin, generics.ListAPIView):
+class EventSongsView(LoginRequiredMixin, EventPermissionMixin, generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self, song_catalog_id):
@@ -135,8 +144,6 @@ class EventSongsView(EventPermissionMixin, generics.ListAPIView):
             return Song.objects.filter(song_catalog=song_catalog_id)
 
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect("user:login")
         event_id = kwargs.get("event_id")
         event = get_object_or_404(Event, id=event_id)
 
@@ -167,3 +174,22 @@ class EventSongsView(EventPermissionMixin, generics.ListAPIView):
     #    page_number = request.GET.get("page")
     #    page_obj = paginator.get_page(page_number)
     #    return render(request, "song_search.html", {"page_obj": page_obj})
+
+
+class EventView(LoginRequiredMixin, generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = Event.objects.all()
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        events = self.get_queryset()
+        for event in events:
+            print(event.event_organizer)
+            print(request.user)
+            if event.event_organizer == request.user:
+                print(event.event_organizer)
+                event.can_delete = True
+
+        return render(request, "event_api/events.html", {"events": events})

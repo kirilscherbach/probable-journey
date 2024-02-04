@@ -1,21 +1,25 @@
 from django.urls import path
 
 from .views import (
-    EventAttendeeList,
-    EventDetail,
-    EventList,
+    EventAPI,
+    EventAttendeeAPI,
+    EventDetailAPI,
     EventSongsView,
-    SongAtEventMappingDetail,
-    SongAtEventMappingList,
+    EventView,
+    SongAtEventMappingAPI,
+    SongAtEventMappingDetailAPI,
 )
 
 urlpatterns = [
-    path("events/", EventList.as_view(), name="events"),
-    path("events/<int:pk>/", EventDetail.as_view(), name="events_detail"),
-    path("mappings/", SongAtEventMappingList.as_view(), name="mappings"),
+    path("events/", EventAPI.as_view(), name="events"),
+    path("events/<int:pk>/", EventDetailAPI.as_view(), name="events_detail"),
+    path("mappings/", SongAtEventMappingAPI.as_view(), name="mappings"),
     path(
-        "mappings/<int:pk>/", SongAtEventMappingDetail.as_view(), name="mappings_detail"
+        "mappings/<int:pk>/",
+        SongAtEventMappingDetailAPI.as_view(),
+        name="mappings_detail",
     ),
-    path("event_attendees/", EventAttendeeList.as_view(), name="event_attendees"),
+    path("event_attendees/", EventAttendeeAPI.as_view(), name="event_attendees"),
     path("event/<int:event_id>/songs/", EventSongsView.as_view(), name="event_songs"),
+    path("event/list/", EventView.as_view(), name="event_list"),
 ]

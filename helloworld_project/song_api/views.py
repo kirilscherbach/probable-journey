@@ -2,7 +2,7 @@ from django.contrib.postgres.search import SearchQuery, SearchRank
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from rest_framework import generics
-from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 
 from .models import Song, SongCatalog
 from .serializers import SongCatalogSerializer, SongSerializer
@@ -29,7 +29,7 @@ class SongUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
 
 class SongSearchList(generics.ListAPIView):
     serializer_class = SongSerializer
-    permission_classes = [AllowAny]  # Allow any user to search songs
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         query = self.request.query_params.get("q", "")
