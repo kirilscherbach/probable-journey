@@ -151,21 +151,22 @@ class EventSongsView(LoginRequiredMixin, EventPermissionMixin, generics.ListAPIV
 
         song_mappings = SongAtEventMapping.objects.filter(event=event)
         song_mapper_dict = {
-            mapping.song_id: mapping.mapper_id for mapping in song_mappings
+            mapping.song_id: (mapping.mapper_id, mapping.id)
+            for mapping in song_mappings
         }
 
-        song_list = list(songs.values())
-        for song in song_list:
-            if song["id"] in song_mapper_dict:
-                song["is_selected"] = True
-                if song_mapper_dict[song["id"]] == request.user.id:
-                    song["can_delete"] = True
+        for song in songs:
+            if song.id in song_mapper_dict:
+                song.is_selected = True
+                if song_mapper_dict[song.id][0] == request.user.id:
+                    song.can_delete = True
+                    song.mapping_id = song_mapper_dict[song.id][1]
             else:
-                song["is_selected"] = False
-                song["can_delete"] = False
+                song.is_selected = False
+                song.can_delete = False
 
         return render(
-            request, "event_api/song_mapper.html", {"event": event, "songs": song_list}
+            request, "event_api/song_mapper.html", {"event": event, "songs": songs}
         )
 
     # def get(self, request, *args, **kwargs):

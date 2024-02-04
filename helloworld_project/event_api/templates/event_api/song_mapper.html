@@ -13,13 +13,37 @@
         {% for song in songs %}
             <li>
                 <input type="checkbox" name="song" value="{{ song.id }}">
-                {{ song.song_title }} by {{ song.artist }} {% if song.is_selected %}(Selected){% endif %}{% if song.can_delete %}(Deletable){% endif %}
+                {{ song.song_title }} by {{ song.artist }} {% if song.is_selected %}(Selected){% endif %}
+                {% if song.can_delete %}
+                    <button type="button" onclick="deleteSong('{% url 'event-api:mappings_detail' song.mapping_id %}')">Delete {{ song.mapping_id }}</button>
+                {% endif %}
             </li>
         {% endfor %}
         <input type="submit" value="Add songs">
-    </form>
+    </form id="songForm">
 
     <script>
+        function deleteSong(deleteUrl) {
+
+            fetch(deleteUrl, {
+                method: "DELETE",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                }
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    // Reload the current page
+                    location.reload();
+                } else {
+                    console.error("Error:", response.statusText);
+                }
+            })
+            .catch(function(error) {
+                console.error("Error:", error);
+            });
+        }
+
         document.getElementById("songForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
