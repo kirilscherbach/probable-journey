@@ -105,7 +105,7 @@ else:
             "NAME": "postgres",
             "USER": "postgres",
             "PASSWORD": config("db_password"),
-            "HOST": "localhost",
+            "HOST": config("keller_ip"),
             "PORT": "5432",
         }
     }
