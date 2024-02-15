@@ -34,7 +34,7 @@ class Song(models.Model):
     artist = models.CharField(max_length=250)
     album = models.CharField(max_length=250, null=True, blank=True)
     genre = models.CharField(max_length=250, null=True, blank=True)
-    year = models.IntegerField(null=True, blank=True)
+    year = models.CharField(max_length=250, null=True, blank=True)
     song_length = models.CharField(max_length=250, null=True, blank=True)
     charter = models.CharField(max_length=250, null=True, blank=True)
     intensity_bass = models.IntegerField(choices=INTENSITY_CHOICES, default=-1)
@@ -60,8 +60,8 @@ class Song(models.Model):
     intensity_rhythm = models.IntegerField(choices=INTENSITY_CHOICES, default=-1)
     intensity_rhythm_ghl = models.IntegerField(choices=INTENSITY_CHOICES, default=-1)
 
-    create_date = models.DateField(auto_now_add=True)
-    update_date = models.DateField(auto_now=True)
+    create_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
     search_vector = SearchVectorField(null=True, blank=True)
 
     class Meta:
