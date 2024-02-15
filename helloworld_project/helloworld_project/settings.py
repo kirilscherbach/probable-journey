@@ -102,7 +102,7 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": "postgres",
+            "NAME": "probable_journey",
             "USER": "postgres",
             "PASSWORD": config("db_password"),
             "HOST": config("keller_ip"),
