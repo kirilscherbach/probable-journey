@@ -35,10 +35,13 @@ class SongAtEventMapping(models.Model):
         ]
 
     def save(self, *args, **kwargs):
-        if not EventAttendee.objects.filter(
-            event=self.event, attendee=self.mapper
-        ).exists():
-            raise ValidationError("The mapper is not an attendee of this event.")
+        if not self.event.event_organizer == self.mapper:
+            if not EventAttendee.objects.filter(
+                event=self.event, attendee=self.mapper
+            ).exists():
+                raise ValidationError(
+                    f"The mapper is not an attendee of this event or {self.event.event_organizer} is not {self.mapper}."
+                )
         super().save(*args, **kwargs)
 
     def __str__(self) -> str:
