@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
+    path("__debug__/", include("debug_toolbar.urls")),
     path(
         "accounts/",
         include(("user_management.urls", "user_management"), namespace="user"),

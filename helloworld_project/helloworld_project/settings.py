@@ -32,10 +32,14 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # Application definition
 
 INSTALLED_APPS = [
+    "debug_toolbar",
     "user_management.apps.UserManagementConfig",
     "hello",
     "django_htmx",
@@ -51,6 +55,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
