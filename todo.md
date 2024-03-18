@@ -1,2 +1,2 @@
-- add songs as initial load
 - add limit of songs per user to event model
+- switch songs selection to HTMX
