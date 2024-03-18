@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
@@ -13,14 +12,10 @@ class SignUpView(generic.CreateView):
     template_name = "registration/signup.html"
 
 
-class CustomLoginView(LoginView):
-    template_name = "registration/login.html"
-
-
-class CustomLoggedOutView(LogoutView):
-    template_name = "registration/logged_out.html"
-
-
 @login_required
 def profile(request):
+    print(request.user)
+    print(request.user.is_authenticated)
+    print(request.session.session_key)
+    print(request.COOKIES)
     return render(request, "user_management/profile.html", {"user": request.user})
