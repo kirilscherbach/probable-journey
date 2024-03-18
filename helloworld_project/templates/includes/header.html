@@ -5,6 +5,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             {% if user.is_authenticated %}
+            Hi {{ user.username }}!
             <li class="nav-item">
               <a class="nav-link" href="{% url 'user:profile' %}">Profile</a>
             </li>

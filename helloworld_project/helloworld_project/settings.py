@@ -40,8 +40,6 @@ INTERNAL_IPS = [
 
 INSTALLED_APPS = [
     "debug_toolbar",
-    "user_management.apps.UserManagementConfig",
-    "hello",
     "django_htmx",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -49,6 +47,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "hello.apps.HelloConfig",
+    "user_management.apps.UserManagementConfig",
     "song_api.apps.SongApiConfig",
     "event_api.apps.EventApiConfig",
     "rest_framework",

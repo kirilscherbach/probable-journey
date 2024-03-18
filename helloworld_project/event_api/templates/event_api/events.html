@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Pick an event!</h1>
+    <h1>Pick an event, {{ user }} !</h1>
     {% for event in events %}
     <li>
         <a href="{% url 'event-api:event_songs' event_id=event.id %}">{{ event.event_name }} on {{ event.event_date }} {% if event.can_delete %} (Deletable) {% endif %} </a>

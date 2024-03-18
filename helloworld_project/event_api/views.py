@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchQuery, SearchRank
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, render
+from django.views.generic import ListView
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
@@ -128,11 +129,13 @@ class EventAttendeeAPI(EventPermissionMixin, generics.ListCreateAPIView):
         serializer.save()
 
 
-class EventSongsView(LoginRequiredMixin, EventPermissionMixin, generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
+class EventSongsView(LoginRequiredMixin, ListView):
+    model = Song
+    template_name = "event_api/song_mapper.html"
+    context_object_name = "songs"
 
     def get_queryset(self, song_catalog_id):
-        query = self.request.query_params.get("q", "")
+        query = self.request.GET.get("q", "")
         if query:
             search_query = SearchQuery(query)
             return (
@@ -165,32 +168,24 @@ class EventSongsView(LoginRequiredMixin, EventPermissionMixin, generics.ListAPIV
                 song.is_selected = False
                 song.can_delete = False
 
-        return render(
-            request, "event_api/song_mapper.html", {"event": event, "songs": songs}
-        )
-
-    # def get(self, request, *args, **kwargs):
-    #    queryset = self.get_queryset()
-    #    paginator = Paginator(queryset, 10)  # Show 10 songs per page
-    #    page_number = request.GET.get("page")
-    #    page_obj = paginator.get_page(page_number)
-    #    return render(request, "song_search.html", {"page_obj": page_obj})
+        return render(request, self.template_name, {"event": event, "songs": songs})
 
 
-class EventView(LoginRequiredMixin, generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
+class EventView(LoginRequiredMixin, ListView):
+    model = Event
+    template_name = "event_api/events.html"
+    context_object_name = "events"
 
     def get_queryset(self):
-        queryset = Event.objects.all()
+        queryset = super().get_queryset()
         return queryset
 
     def get(self, request, *args, **kwargs):
         events = self.get_queryset()
         for event in events:
-            print(event.event_organizer)
-            print(request.user)
             if event.event_organizer == request.user:
-                print(event.event_organizer)
                 event.can_delete = True
 
-        return render(request, "event_api/events.html", {"events": events})
+        return render(
+            request, self.template_name, {"events": events, "user": request.user}
+        )

@@ -21,7 +21,7 @@ urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path(
         "accounts/",
-        include(("user_management.urls", "user_management"), namespace="user"),
+        include(("user_management.urls", "user-management"), namespace="user"),
     ),
     path("admin/", admin.site.urls),
     path("", include(("hello.urls", "hello"), namespace="home")),
